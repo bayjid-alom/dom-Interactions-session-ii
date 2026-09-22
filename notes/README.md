@@ -239,7 +239,9 @@ calculateCount()    // ফাংশন কল
 ### Important Part : Struggling 
 
 -  if (event.target.classList.contains('thriving-btn')) {} - এই স্টেটমেন্টের মতো আরেকটা else if স্টেট্মেন্ট ব্যবহার করে...।
+- renderThriving() কে কপি করে শুধু পেস্ট করে ডাটা পরিবর্তন করতে হবে।
 - renderStruggling() //Create  - Copy - paste
+- 
 - একইভাবে calculateCount() & renderStruggling() ফাংশন কল
 - Data/Information Update for Struggling
 
