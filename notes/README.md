@@ -143,9 +143,10 @@ console.log(thrivingList)
 <!-- Empty -->
 </section>
 
-````
-- const filteredSection = document.getElementById("filtered-section");
 ```
+
+- const filteredSection = document.getElementById("filtered-section");
+
 
 - NOW . make a function renderThriving()
 - Called -  renderThriving()  কোথায়?  mainContainer e event.target that's why
@@ -155,11 +156,98 @@ maincontainer er ekdom last e call korte hobe
 - mainContainer e event listener na diye oi thrive button e dibo
 - mainContainer এর ভিতরের অংশ সম্পূর্ণ কাট করে -
 
+
 ```
 if (event.target.classList.contains('thriving-btn')) {
 // এখানে পেস্ট করে দিতে হবে।
 }
+
 ```
+
+
+- appendChild(div)
+- cardInfo কে thrivingList এ এপেন্ড করার পর পরই...
+- parentNode.querySelector(".status").innerText = "Thrive"
+
+-  toggleStyle ফাংশনের ভিতরে selected এরপরে...
+
+
+```
+if (id == "thriving-filter-btn") {
+    allCardSection.classList.add("hidden")
+    filteredSection.classList.remove("hidden")
+}
+```
+
+<br>
+
+- Problem: Thrive button-এ click করলে card-টি Thriving section-এ render হয়ে যায়। এরপর Thriving tab-এ click করলে card দেখা যায়। কিন্তু পরে All button-এ click করলেও শুধু Thriving-এর card-টাই দেখা যায়।
+- Fix: All button-এ click করলে সব ধরনের card আবার render/display করতে হবে, যাতে শুধু Thriving-এর card আটকে না থাকে।
+- এটা Fix করতে...
+
+```
+else if (id == "all-filter-btn") {
+    filteredSection.classList.add("hidden")
+    allCardSection.classList.remove("hidden")
+}
+```
+
+
+- Anothe Problem : এপেন্ড হলে সেটা স্ট্যাটিক ডাটা স্টোর হচ্ছে , সেটা ডাইনামিকভাবে দেখানোর জন্য,
+- N.B:    ${thrive.plantName} 
+```
+<div>
+    <p class="plantName text-4xl">${thrive.plantName}</p>
+    <p class="latinName">${thrive.latinName}</p>
+</div>
+```
+
+
+
+-  parentNode.querySelector(".status").innerText = "Thrive" 
+- উপরের লাইনটি CardInfo অবজেক্টের আগে লিখে দিতে হবে।
+
+Or, 
+
+```
+const cardInfo = {
+    plantName,
+    latinName,
+    light,
+    water,
+    status: "Thrive",
+    notes
+}
+```
+
+
+
+- To show Thrive Count , ফাংশন কল 
+
+```
+const plantExist = thrivingList.find(item => item.plantName == cardInfo.plantName);
+if (!plantExist) {
+    thrivingList.push(cardInfo)
+}
+calculateCount()    // ফাংশন কল
+```
+<br>
+
+
+
+
+### Important Part : Struggling 
+
+-  if (event.target.classList.contains('thriving-btn')) {} - এই স্টেটমেন্টের মতো আরেকটা else if স্টেট্মেন্ট ব্যবহার করে...।
+- renderStruggling() //Create  - Copy - paste
+- একইভাবে calculateCount() & renderStruggling() ফাংশন কল
+- Data/Information Update for Struggling
+
+
+
+
+
+
 
 
 

@@ -18,12 +18,17 @@ const filteredSection = document.getElementById("filtered-section");
 
 
 
+
 function calculateCount() {
     total.innerText = allCardSection.children.length;
     thrivingCount.innerText = thrivingList.length;
     strugglingCount.innerText = strugglingList.length;
 }
 calculateCount()
+
+
+
+
 
 
 function toggleStyle(id) {
@@ -44,7 +49,22 @@ function toggleStyle(id) {
     selected.classList.remove("bg-gray-300", "text-black")
     selected.classList.add("bg-black", "text-white")
     // selected.classList.add("border", "border-blue-600")
+
+
+    if (id == "thriving-filter-btn") {
+        allCardSection.classList.add("hidden")
+        filteredSection.classList.remove("hidden")
+    }
+
+    else if (id == "all-filter-btn") {
+        filteredSection.classList.add("hidden")
+        allCardSection.classList.remove("hidden")
+    }
 }
+
+
+
+
 
 
 
@@ -55,11 +75,11 @@ function toggleStyle(id) {
 
 mainContainer.addEventListener("click", function (event) {
     // console.log(event.target.classList.contains('thriving-btn')) // just checking
-
     if (event.target.classList.contains('thriving-btn')) {
 
         // const parentNode = event.target.parentNode.parentNode;
         const parentNode = event.target.closest('.card')  //Easy way
+
         const plantName = parentNode.querySelector(".plantName").innerText;
         const latinName = parentNode.querySelector(".latinName").innerText;
 
@@ -70,27 +90,27 @@ mainContainer.addEventListener("click", function (event) {
         const notes = parentNode.querySelector(".notes").innerText;
 
         // console.log(plantName, light, water, status, notes)
+        parentNode.querySelector(".status").innerText = "Thrive"
 
         const cardInfo = {
             plantName,
             latinName,
             light,
             water,
-            status,
+            status: "Thrive",
             notes
         }
-        // console.log(cardInfo)
 
         // thrivingList এবং   cardInfo match করাতে হবে..
         const plantExist = thrivingList.find(item => item.plantName == cardInfo.plantName);
         if (!plantExist) {
             thrivingList.push(cardInfo)
         }
+        calculateCount()
         // console.log(thrivingList)
 
         renderThriving()
     }
-
 
 })
 
@@ -113,18 +133,18 @@ function renderThriving() {
          <div class="leftside space-y-6">
                     <!-- part - 01 -->
                     <div>
-                        <p class="plantName text-4xl">Plant Name 01</p>
-                        <p class="latinName">Latin Name</p>
+                        <p class="plantName text-4xl">${thrive.plantName}</p>
+                        <p class="latinName">${thrive.latinName}</p>
                     </div>
                     <!-- part 02 -->
                     <div class="flex gap-3">
-                        <p class="light bg-gray-200 rounded-md px-3 py-1">Bright Indicate</p>
-                        <p class="water bg-gray-200 rounded-md px-3 py-1">Weekly</p>
+                        <p class="light bg-gray-200 rounded-md px-3 py-1">${thrive.light}</p>
+                        <p class="water bg-gray-200 rounded-md px-3 py-1">${thrive.water}</p>
                     </div>
                     <!-- part 03 -->
                     <div>
-                        <p class="status">Not Applicable</p>
-                        <p class="notes">New leaf unfurling by the east window.</p>
+                        <p class="status">${thrive.status}</p>
+                        <p class="notes">${thrive.notes}</p>
                     </div>
 
                     <div class="flex gap-4">
