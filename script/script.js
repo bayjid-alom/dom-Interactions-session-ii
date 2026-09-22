@@ -51,11 +51,15 @@ function toggleStyle(id) {
 
 /****
  mainContainer-এর ভিতরে user যেই card-এ click করে, event.target.parentNode.parentNode ব্যবহার করে সেই card-টিকে (parentNode) select করা হচ্ছে। এরপর parentNode.querySelector() দিয়ে ওই card-এর plantName, latinName, light, water, status এবং notes-এর text (innerText) বের করে আলাদা JavaScript variable-এ store করা হচ্ছে।  ****/
+
+
 mainContainer.addEventListener("click", function (event) {
     // console.log(event.target.classList.contains('thriving-btn')) // just checking
 
     if (event.target.classList.contains('thriving-btn')) {
-        const parentNode = event.target.parentNode.parentNode;
+
+        // const parentNode = event.target.parentNode.parentNode;
+        const parentNode = event.target.closest('.card')  //Easy way
         const plantName = parentNode.querySelector(".plantName").innerText;
         const latinName = parentNode.querySelector(".latinName").innerText;
 
@@ -91,7 +95,9 @@ mainContainer.addEventListener("click", function (event) {
 })
 
 
-// Filtered section e push korte hobe
+
+
+// Push in filterdSection (Which is empty)
 function renderThriving() {
     filteredSection.innerHTML = "";
 
@@ -138,11 +144,8 @@ function renderThriving() {
 
         `;
 
-        // 20:00
-
-
-
-
+        // Rest of the project Part-01 
+        filteredSection.appendChild(div)
 
     }
 

@@ -27,8 +27,19 @@ Thrive count : 3
 - <button onclick="toggleStyle('struggling-filter-btn')
 - যে বাটনে ক্লিক করা হচ্ছে তার আইডি কে দিয়ে দিচ্ছে।
 - এবার --
-  - zekno ekta btn e click korle 3 ta btn er color yash kore dibo.... er age 3 ta btn er bg-black text-white remove kore dite hobe
-  - zeta select korbo tar bg--- black 
+
+<br>
+
+
+ ### Button Toggling
+
+- প্রথমে ৩টি button-এর active `class` remove করে সবগুলোকে neutral style দেওয়া হবে।
+- সব button-এ `bg-gray-300` এবং `text-black` class add করা হবে।
+- যে button-এ click করা হবে, সেটিকে তার `id` দিয়ে select করা হবে।
+- Selected button থেকে `bg-gray-300` এবং `text-black` class remove করা হবে।
+- এরপর selected button-এ `bg-black` এবং `text-white` class add করা হবে।
+- ফলে একসাথে শুধু selected button-ই active থাকবে।
+
 
 
 
