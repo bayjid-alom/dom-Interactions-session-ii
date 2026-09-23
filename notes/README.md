@@ -248,6 +248,46 @@ calculateCount()    // ফাংশন কল
 
 
 
+### ⚠️ Toggling Issue
+
+কার্ড টগল করার সময় একটি সমস্যা দেখা যাচ্ছে।
+
+* **Struggling** এ ক্লিক করলে Struggling-এর কার্ডটি সঠিকভাবে দেখাচ্ছে।
+* এরপর **Thriving** টগল বাটনে ক্লিক করলে আগের **Struggling** কার্ডটিই দেখাচ্ছে।
+* কিন্তু **All** বাটনে ক্লিক করলে ৩টি কার্ডই সঠিকভাবে দেখাচ্ছে।
+
+**সমস্যা:** টগল পরিবর্তন করার সময় আগের ফিল্টার করা কার্ডের স্টেট সঠিকভাবে রিসেট হচ্ছে না।
+
+
+#### Think Logically
+- এমনভাবে লজিক বিল্ড করতে হবে যেন Thrive এ ক্লিক করলে কার্ড একেবারে থ্রাইভে চলে যায়। all থেকে যেন একটা কার্ড কমে যায়। & Thrive থেকে আবার Struggle এ ক্লিক করলে টগল হয়ে Struggle এ কার্ডটি চলে আসবে।
+
+<br>
+
+- if() condition (Thrive-btn এর) -ভিতরে একটা শর্ত লিখে দিতে হবে - CardInfo Push করার পরেই...
+ - Thrive এ Struggling কার্ড থাকলে সেটা Thrive থেকে রিমুভ হয়ে যাবে
+
+```
+- কোনো একটা item কে array থেকে বাদ দেয়।
+- if() এর ভিতরে --
+strugglingList = strugglingList.filter(item => item.plantName != cardInfo.plantName)
+```
+
+- একইভাবে
+
+```
+// Struggle এ Thriving কার্ড থাকলে সেটা Struggle থেকে রিমুভ হয়ে যাবে
+else if() এর ভিতরে --
+thrivingList = thrivingList.filter(item => item.plantName == cardInfo.plantName)
+calculateCount()
+```
+
+
+
+
+
+
+
 
 
 

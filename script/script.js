@@ -60,6 +60,10 @@ function toggleStyle(id) {
         filteredSection.classList.add("hidden")
         allCardSection.classList.remove("hidden")
     }
+    else if (id == "struggling-filter-btn") {
+        filteredSection.classList.remove("hidden")
+        allCardSection.classList.add("hidden")
+    }
 }
 
 
@@ -102,14 +106,62 @@ mainContainer.addEventListener("click", function (event) {
         }
 
         // thrivingList এবং   cardInfo match করাতে হবে..
-        const plantExist = thrivingList.find(item => item.plantName == cardInfo.plantName);
+        const plantExist = thrivingList.find(item => item.plantName != cardInfo.plantName);
+
         if (!plantExist) {
             thrivingList.push(cardInfo)
         }
+
+
+        // Thrive এ Struggling কার্ড থাকলে সেটা Thrive থেকে রিমুভ হয়ে যাবে
+        strugglingList = strugglingList.filter(item => item.plantName == cardInfo.plantName)
+
+
         calculateCount()
         // console.log(thrivingList)
 
         renderThriving()
+    }
+
+
+    else if (event.target.classList.contains('struggling-btn')) {
+
+        // const parentNode = event.target.parentNode.parentNode;
+        const parentNode = event.target.closest('.card')  //Easy way
+
+        const plantName = parentNode.querySelector(".plantName").innerText;
+        const latinName = parentNode.querySelector(".latinName").innerText;
+
+        const light = parentNode.querySelector(".light").innerText;
+        const water = parentNode.querySelector(".water").innerText;
+
+        const status = parentNode.querySelector(".status").innerText;
+        const notes = parentNode.querySelector(".notes").innerText;
+
+        // console.log(plantName, light, water, status, notes)
+        parentNode.querySelector(".status").innerText = "Struggle"
+
+        const cardInfo = {
+            plantName,
+            latinName,
+            light,
+            water,
+            status: 'Struggle',
+            notes
+        }
+
+        // thrivingList এবং   cardInfo match করাতে হবে..
+        const plantExist = strugglingList.find(item => item.plantName == cardInfo.plantName);
+        if (!plantExist) {
+            strugglingList.push(cardInfo)
+        }
+
+        // Struggle এ Thriving কার্ড থাকলে সেটা Struggle থেকে রিমুভ হয়ে যাবে
+        thrivingList = thrivingList.filter(item => item.plantName == cardInfo.plantName)
+        calculateCount()
+        // console.log(thrivingList)
+
+        renderStruggling()
     }
 
 })
@@ -133,7 +185,7 @@ function renderThriving() {
          <div class="leftside space-y-6">
                     <!-- part - 01 -->
                     <div>
-                        <p class="plantName text-4xl">${thrive.plantName}</p>
+                        <p class="plantName text-4xl  mb-2 font-semibold text-black/70"">${thrive.plantName}</p>
                         <p class="latinName">${thrive.latinName}</p>
                     </div>
                     <!-- part 02 -->
@@ -145,6 +197,63 @@ function renderThriving() {
                     <div>
                         <p class="status">${thrive.status}</p>
                         <p class="notes">${thrive.notes}</p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button
+                            class="thriving-btn bg-green-200 px-4 py-2 rounded-md border border-green-200  hover:border hover:border-green-500 transition-all duration-300 ease-in-out">Thrive</button>
+
+                        <button
+                            class="struggling-btn bg-red-200 px-4 py-2 rounded-md border border-red-200  hover:border hover:border-red-500 transition-all duration-300 ease-in-out">Struggle</button>
+                    </div>
+                </div>
+
+
+                <div class="rightside">
+                    <button
+                        class="bg-red-100 text-red-500 px-4 py-2 rounded-md border border-red-200  hover:border hover:border-red-500 transition-all duration-300 ease-in-out">Delete</button>
+                </div>
+
+        `;
+
+        // Rest of the project Part-01 
+        filteredSection.appendChild(div)
+
+    }
+
+}
+
+
+
+
+
+function renderStruggling() {
+    filteredSection.innerHTML = "";
+
+    for (let struggle of strugglingList) {
+        // console.log(thrive)
+
+        let div = document.createElement("div");
+        // Card er class name added
+        div.className = "card flex justify-between my-6 py-6 border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1  p-4"
+
+        // Card er body ta paste
+        div.innerHTML = `
+         <div class="leftside space-y-6">
+                    <!-- part - 01 -->
+                    <div>
+                        <p class="plantName text-4xl  mb-2 font-semibold text-black/70"">${struggle.plantName}</p>
+                        <p class="latinName">${struggle.latinName}</p>
+                    </div>
+                    <!-- part 02 -->
+                    <div class="flex gap-3">
+                        <p class="light bg-gray-200 rounded-md px-3 py-1">${struggle.light}</p>
+                        <p class="water bg-gray-200 rounded-md px-3 py-1">${struggle.water}</p>
+                    </div>
+                    <!-- part 03 -->
+                    <div>
+                        <p class="status">${struggle.status}</p>
+                        <p class="notes">${struggle.notes}</p>
                     </div>
 
                     <div class="flex gap-4">
