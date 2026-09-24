@@ -1,5 +1,6 @@
 let thrivingList = [];
 let strugglingList = [];
+let currentStatus = "all"
 
 let total = document.getElementById("total");
 let thrivingCount = document.getElementById("thriving-count");
@@ -10,22 +11,21 @@ const allFilterBtn = document.getElementById("all-filter-btn");
 const thrivingBtn = document.getElementById("thriving-filter-btn");
 const strugglingBtn = document.getElementById("struggling-filter-btn")
 
+let allCardSection = document.getElementById("all-cards");
+let remainingCardCount = allCardSection.children.length;
 
-const allCardSection = document.getElementById("all-cards");
-// console.log(allCardSection.children.length)
 const mainContainer = document.querySelector("main");
 const filteredSection = document.getElementById("filtered-section");
-
+const emptyMsgSection = document.getElementById("no-applicants")
 
 
 
 function calculateCount() {
-    total.innerText = allCardSection.children.length;
+    total.innerText = remainingCardCount;
     thrivingCount.innerText = thrivingList.length;
     strugglingCount.innerText = strugglingList.length;
 }
 calculateCount()
-
 
 
 
@@ -46,23 +46,50 @@ function toggleStyle(id) {
 
     // Remove gray style from the selected button and add black style
     const selected = document.getElementById(id);
+    currentStatus = id;
+
     selected.classList.remove("bg-gray-300", "text-black")
     selected.classList.add("bg-black", "text-white")
-    // selected.classList.add("border", "border-blue-600")
+
 
 
     if (id == "thriving-filter-btn") {
         allCardSection.classList.add("hidden")
         filteredSection.classList.remove("hidden")
+        renderThriving()
+
+        if (thrivingList.length == 0) {
+            emptyMsgSection.classList.remove("hidden");
+        }
+        else {
+            emptyMsgSection.classList.add("hidden");
+        }
     }
 
     else if (id == "all-filter-btn") {
         filteredSection.classList.add("hidden")
         allCardSection.classList.remove("hidden")
+        renderThriving()
+
+        if (remainingCardCount == 0) {
+            emptyMsgSection.classList.remove("hidden")
+        }
+        else {
+            emptyMsgSection.classList.add("hidden")
+        }
     }
+
     else if (id == "struggling-filter-btn") {
         filteredSection.classList.remove("hidden")
         allCardSection.classList.add("hidden")
+        renderStruggling()
+
+        if (strugglingList.length == 0) {
+            emptyMsgSection.classList.remove("hidden");
+        }
+        else {
+            emptyMsgSection.classList.add("hidden");
+        }
     }
 }
 
@@ -71,14 +98,8 @@ function toggleStyle(id) {
 
 
 
-
-
-/****
- mainContainer-এর ভিতরে user যেই card-এ click করে, event.target.parentNode.parentNode ব্যবহার করে সেই card-টিকে (parentNode) select করা হচ্ছে। এরপর parentNode.querySelector() দিয়ে ওই card-এর plantName, latinName, light, water, status এবং notes-এর text (innerText) বের করে আলাদা JavaScript variable-এ store করা হচ্ছে।  ****/
-
-
 mainContainer.addEventListener("click", function (event) {
-    // console.log(event.target.classList.contains('thriving-btn')) // just checking
+
     if (event.target.classList.contains('thriving-btn')) {
 
         // const parentNode = event.target.parentNode.parentNode;
@@ -96,6 +117,18 @@ mainContainer.addEventListener("click", function (event) {
         // console.log(plantName, light, water, status, notes)
         parentNode.querySelector(".status").innerText = "Thrive"
 
+        parentNode.querySelector(".status").classList.add(
+            "text-green-600",
+            "font-semibold",
+            "bg-green-50",
+            "px-3",
+            "border",
+            "border-green-200",
+            "py-1",
+            "rounded-full",
+            "inline-block"
+        );
+
         const cardInfo = {
             plantName,
             latinName,
@@ -106,22 +139,32 @@ mainContainer.addEventListener("click", function (event) {
         }
 
         // thrivingList এবং   cardInfo match করাতে হবে..
-        const plantExist = thrivingList.find(item => item.plantName != cardInfo.plantName);
-
+        const plantExist = thrivingList.find(item => item.plantName == cardInfo.plantName);
         if (!plantExist) {
             thrivingList.push(cardInfo)
         }
 
-
         // Thrive এ Struggling কার্ড থাকলে সেটা Thrive থেকে রিমুভ হয়ে যাবে
-        strugglingList = strugglingList.filter(item => item.plantName == cardInfo.plantName)
-
+        strugglingList = strugglingList.filter(item => item.plantName != cardInfo.plantName)
 
         calculateCount()
-        // console.log(thrivingList)
 
-        renderThriving()
+        if (currentStatus == "struggling-filter-btn") {
+            renderStruggling()
+
+            if (strugglingList.length == 0) {
+                emptyMsgSection.classList.remove("hidden")
+            }
+            else {
+                emptyMsgSection.classList.add("hidden")
+            }
+        }
+
+        // renderThriving()   // Removed & called where contains selected varibale.
     }
+
+
+
 
 
     else if (event.target.classList.contains('struggling-btn')) {
@@ -140,6 +183,17 @@ mainContainer.addEventListener("click", function (event) {
 
         // console.log(plantName, light, water, status, notes)
         parentNode.querySelector(".status").innerText = "Struggle"
+        parentNode.querySelector(".status").classList.add(
+            "text-red-600",
+            "font-semibold",
+            "bg-red-50",
+            "px-3",
+            "border",
+            "border-red-200",
+            "py-1",
+            "rounded-full",
+            "inline-block"
+        );
 
         const cardInfo = {
             plantName,
@@ -157,14 +211,31 @@ mainContainer.addEventListener("click", function (event) {
         }
 
         // Struggle এ Thriving কার্ড থাকলে সেটা Struggle থেকে রিমুভ হয়ে যাবে
-        thrivingList = thrivingList.filter(item => item.plantName == cardInfo.plantName)
-        calculateCount()
-        // console.log(thrivingList)
+        // Thrive card remove from "Struggling"
+        thrivingList = thrivingList.filter(item => item.plantName != cardInfo.plantName)
 
-        renderStruggling()
+
+        if (currentStatus == "thriving-filter-btn") {
+            renderThriving();
+
+            if (thrivingList.length == 0) {
+                emptyMsgSection.classList.remove("hidden");
+            }
+            else {
+                emptyMsgSection.classList.add("hidden");
+            }
+        }
+        calculateCount()
+
+        // renderStruggling()  // Removed & called where contains selected varibale.
     }
 
 })
+
+
+
+
+
 
 
 
@@ -195,7 +266,7 @@ function renderThriving() {
                     </div>
                     <!-- part 03 -->
                     <div>
-                        <p class="status">${thrive.status}</p>
+                        <p class="status text-green-600 font-semibold bg-green-50 px-3 border border-green-200 py-1 rounded-full inline-block">${thrive.status}</p>
                         <p class="notes">${thrive.notes}</p>
                     </div>
 
@@ -252,7 +323,7 @@ function renderStruggling() {
                     </div>
                     <!-- part 03 -->
                     <div>
-                        <p class="status">${struggle.status}</p>
+                        <p class="status text-red-600 font-semibold bg-red-50 px-3 border border-red-200 py-1 rounded-full inline-block">${struggle.status}</p>
                         <p class="notes">${struggle.notes}</p>
                     </div>
 
@@ -283,3 +354,21 @@ function renderStruggling() {
 
 
 
+
+
+
+
+
+
+mainContainer.addEventListener("click", function (event) {
+
+    if (event.target.classList.contains("delete-btn")) {
+
+        const card = event.target.closest(".card")
+        card.style.display = "none"
+
+        remainingCardCount--;
+        calculateCount()
+    }
+
+})

@@ -284,6 +284,38 @@ calculateCount()
 
 
 
+#### Rest of the project [3] - 7:00-End
+- let currentStatus = "all"
+
+```
+const selected = document.getElementById(id);
+currentStatus = id;   - Newline
+```
+
+- else if ( ) এ
+
+```
+thrivingList = thrivingList.filter(item => item.plantName != cardInfo.plantName)
+
+নতুন লাইন ঃ
+if (currentStatus == "thriving-filter-btn") {
+    renderThriving();
+}
+```
+
+
+- Function call :
+
+```
+ else if (id == "struggling-filter-btn") {
+    filteredSection.classList.remove("hidden")
+    allCardSection.classList.add("hidden")
+    renderStruggling()  - ফাংশন কল
+    এখন Thrive-এ থাকা কার্ডে Struggle বাটনে Click করলে Strugging-এ চলে যাবে।
+}
+```
+
+
 
 
 
