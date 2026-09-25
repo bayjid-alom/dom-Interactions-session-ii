@@ -117,6 +117,10 @@ mainContainer.addEventListener("click", function (event) {
         // console.log(plantName, light, water, status, notes)
         parentNode.querySelector(".status").innerText = "Thrive"
 
+        parentNode.classList.remove("border-l-red-400");
+        parentNode.classList.add("border-l-green-400", "border-l-4");
+
+
         parentNode.querySelector(".status").classList.add(
             "text-green-600",
             "font-semibold",
@@ -180,6 +184,9 @@ mainContainer.addEventListener("click", function (event) {
 
         const status = parentNode.querySelector(".status").innerText;
         const notes = parentNode.querySelector(".notes").innerText;
+
+        parentNode.classList.remove("border-l-green-400");
+        parentNode.classList.add("border-l-red-400", "border-l-4");
 
         // console.log(plantName, light, water, status, notes)
         parentNode.querySelector(".status").innerText = "Struggle"
@@ -249,7 +256,7 @@ function renderThriving() {
 
         let div = document.createElement("div");
         // Card er class name added
-        div.className = "card flex justify-between my-6 py-6 border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1  p-4"
+        div.className = "card border-l-green-400 border-l-4 flex justify-between my-6 py-6 border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1  p-4"
 
         // Card er body ta paste
         div.innerHTML = `
@@ -306,7 +313,7 @@ function renderStruggling() {
 
         let div = document.createElement("div");
         // Card er class name added
-        div.className = "card flex justify-between my-6 py-6 border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1  p-4"
+        div.className = "card border-l-red-400 border-l-4 flex justify-between my-6 py-6 border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1  p-4"
 
         // Card er body ta paste
         div.innerHTML = `
